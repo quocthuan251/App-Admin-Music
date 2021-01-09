@@ -33,10 +33,10 @@ export default function App(props) {
 	} else {
 		return (
 			// <SafeAreaView style={styles.container}>
-				// <StatusBar style="auto" translucent />
-				<AuthProvider>
-					<AppNavigator />
-				</AuthProvider>
+			// <StatusBar style="auto" translucent />
+			<AuthProvider>
+				<AppNavigator />
+			</AuthProvider>
 			// </SafeAreaView>
 		);
 	}
@@ -63,6 +63,16 @@ async function loadResourcesAsync() {
 			Ubuntu_700Bold_Italic,
 		}),
 	]);
+	await Font.loadAsync(
+		'antfill',
+		// eslint-disable-next-line
+		require('@ant-design/icons-react-native/fonts/antfill.ttf')
+	);
+	await Font.loadAsync(
+		'antoutline',
+		// eslint-disable-next-line
+		require('@ant-design/icons-react-native/fonts/antoutline.ttf')
+	);
 }
 
 function handleLoadingError(error) {

@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import * as firebase from 'firebase';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-
+import HomeAdmin from '../screens/HomeAdmin';
 import { AuthContext } from '../provider/AuthProvider';
 
 // Main
@@ -68,7 +68,7 @@ const Main = () => {
 export default () => {
 	const auth = useContext(AuthContext);
 	// const user = auth.user;
-	const user = false;
+	const user = true;
 	return (
 		<NavigationContainer>
 			{user == null && <Loading />}

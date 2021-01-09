@@ -18,7 +18,7 @@ export default function ({ navigation }) {
 				}}
 			>
 				{/* This text using ubuntu font */}
-				<Text bold>Hello World</Text>
+				<Text bold>Hello Thuan pro thuận sdfsda</Text>
 				<Text>This text using ubuntu font</Text>
 				<TouchableOpacity
 					onPress={() => {
