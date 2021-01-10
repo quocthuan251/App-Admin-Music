@@ -3,7 +3,7 @@ import { View, TouchableOpacity } from 'react-native';
 import Text from '../utils/UbuntuFont';
 import Colors from '../../constants/colors';
 import { Ionicons } from '@expo/vector-icons';
-
+import { Feather } from '@expo/vector-icons';
 export default function (props) {
 	return (
 		<View>
@@ -30,10 +30,26 @@ export default function (props) {
 							justifyContent: 'center',
 						}}
 					>
-						<Ionicons name="ios-arrow-back" size={24} color="#000" />
+						<Ionicons
+							name="ios-arrow-back"
+							size={24}
+							color="#000"
+						/>
 					</TouchableOpacity>
 				) : (
-					<View style={{ flex: 1, alignItems: 'flex-start' }} />
+					// <View style={{ flex: 1, alignItems: 'flex-start' }} />
+					<TouchableOpacity
+						onPress={() => {
+							props.navigation.openDrawer();
+						}}
+						style={{
+							flex: 1,
+							alignItems: 'flex-start',
+							justifyContent: 'center',
+						}}
+					>
+						<Feather name="menu" size={24} color="black" />
+					</TouchableOpacity>
 				)}
 
 				<View

@@ -2,10 +2,12 @@ import React, { useContext } from 'react';
 import * as firebase from 'firebase';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import HomeAdmin from '../screens/HomeAdmin';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+// import HomeAdmin from '../screens/HomeAdmin';
 import { AuthContext } from '../provider/AuthProvider';
 
 // Main
+import MainScreen from '../screens/MainScreen';
 import Home from '../screens/Home';
 import SecondScreen from '../screens/SecondScreen';
 
@@ -49,21 +51,20 @@ const Auth = () => {
 	);
 };
 
-const MainStack = createStackNavigator();
-
-const Main = () => {
-	return (
-		<MainStack.Navigator
-			screenOptions={{
-				headerMode: 'none',
-				headerShown: false,
-			}}
-		>
-			<MainStack.Screen name="Home" component={Home} />
-			<MainStack.Screen name="SecondScreen" component={SecondScreen} />
-		</MainStack.Navigator>
-	);
-};
+// const MainStack = createStackNavigator();
+// const Main = () => {
+// 	return (
+// 		<MainStack.Navigator
+// 			screenOptions={{
+// 				headerMode: 'none',
+// 				headerShown: false,
+// 			}}
+// 		>
+// 			<MainStack.Screen name="Home" component={Home} />
+// 			<MainStack.Screen name="SecondScreen" component={SecondScreen} />
+// 		</MainStack.Navigator>
+// 	);
+// };
 
 export default () => {
 	const auth = useContext(AuthContext);
@@ -73,7 +74,7 @@ export default () => {
 		<NavigationContainer>
 			{user == null && <Loading />}
 			{user == false && <Auth />}
-			{user == true && <Main />}
+			{user == true && <MainScreen />}
 		</NavigationContainer>
 	);
 };

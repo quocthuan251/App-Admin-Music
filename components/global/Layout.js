@@ -4,6 +4,9 @@ import { StyleSheet, View } from 'react-native';
 import Colors from '../../constants/colors';
 import TopNav from '../navigation/TopNav';
 import Text from '../utils/UbuntuFont';
+import { Provider } from '@ant-design/react-native';
+import enUS from '@ant-design/react-native/es/locale-provider/en_US';
+
 export default function (props) {
 	return (
 		<View style={styles.container}>
@@ -14,8 +17,7 @@ export default function (props) {
 					withBack={props.withBack ? true : false}
 				/>
 			)}
-			{/* this text using ubuntu font */}
-			{props.children}
+			<Provider locale={enUS}>{props.children}</Provider>
 		</View>
 	);
 }
