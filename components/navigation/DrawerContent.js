@@ -103,7 +103,7 @@ export function DrawerContent(props) {
 							)}
 							label="Quản lý người dùng"
 							onPress={() => {
-								props.navigation.navigate('SongManagement');
+								props.navigation.navigate('UserManagement');
 							}}
 						/>
 						<DrawerItem
@@ -116,7 +116,7 @@ export function DrawerContent(props) {
 							)}
 							label="Quản lý Ca sĩ"
 							onPress={() => {
-								props.navigation.navigate('SongManagement');
+								props.navigation.navigate('ArtistManagement');
 							}}
 						/>
 					</View>

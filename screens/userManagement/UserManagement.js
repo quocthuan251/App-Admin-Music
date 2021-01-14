@@ -1,6 +1,6 @@
 // tslint:disable:no-empty
 import React, { useState, useEffect } from 'react';
-import { Image, ScrollView, View } from 'react-native';
+import { Image, ScrollView, View, StyleSheet, Text } from 'react-native';
 import axios from 'axios';
 import {
 	List,
@@ -8,6 +8,7 @@ import {
 	Modal,
 	Button,
 	Provider,
+	Flex,
 } from '@ant-design/react-native';
 import Layout from '../../components/global/Layout';
 import { callAPI } from './service';
@@ -17,35 +18,33 @@ const Brief = Item.Brief;
 
 export default function ({ navigation }) {
 	const [isHungry, setIsHungry] = useState(true);
-	const [dataSong, setDataSong] = useState([]);
+	const [dataListUser, setDataListUser] = useState([]);
 	const test = () => {
-		console.log(dataSong[1]);
+		console.log(dataListUser[1]);
 	};
 	useEffect(() => {
 		const callData = async () => {
 			let res = await callAPI();
-			setDataSong(res.data.data);
+			setDataListUser(res.data.data);
 			console.log(res.data.data);
 		};
 		callData();
 	}, []);
-	const deleteItemSong = (id) => {
-		const newDataSong = dataSong.filter((item, index) => {
+	const deleteItemUser = (id) => {
+		const newDataListUser = dataListUser.filter((item, index) => {
 			return index !== id;
 		});
-		setDataSong(newDataSong);
+		setDataListUser(newDataListUser);
 		// console.log(id);
 		console.log('hello');
 		// console.log(item);
 	};
 	return (
-		<Layout navigation={navigation} title="Quản lý bài hát" withBack>
+		<Layout navigation={navigation} title="Quản lý user" withBack>
 			<SearchBar
 				placeholder="Search"
 				showCancelButton
-				onSubmit={(value) =>
-					test()
-				}
+				onSubmit={(value) => test()}
 			/>
 			<Button
 				onPress={() => {
@@ -60,14 +59,14 @@ export default function ({ navigation }) {
 				showsHorizontalScrollIndicator={false}
 				showsVerticalScrollIndicator={false}
 			>
-				<List renderHeader={'Danh sách bài hát'}>
-					{dataSong.map((item, i) => (
+				<List renderHeader={'Danh sách người dùng'}>
+					{dataListUser.map((item, i) => (
 						<Item
 							key={i}
 							onPress={() => {
-								test();
+								navigation.navigate('UserInfoManagement');
 							}}
-							thumb={item.image}
+							// thumb="https://photo-resize-zmp3.zadn.vn/w240_r1x1_jpeg/cover/0/7/2/b/072ba9ae04687203d6f6af8e526ce631.jpg"
 							extra={
 								<View>
 									<Button
@@ -90,7 +89,7 @@ export default function ({ navigation }) {
 														{
 															text: 'OK',
 															onPress: () =>
-																deleteItemSong(
+																deleteItemUser(
 																	i
 																),
 														},
@@ -103,10 +102,49 @@ export default function ({ navigation }) {
 									</Button>
 								</View>
 							}
-							multipleLine
 						>
-							{item.title}
-							<Brief>{item.listArtists}</Brief>
+							<View
+								style={{
+									flex: 1,
+									flexDirection: 'row',
+								}}
+							>
+								<Image
+									style={styles.userImg}
+									source={{
+										uri: item.thumbnail,
+									}}
+								/>
+								<View
+									style={{
+										flex: 1,
+										flexDirection: 'row',
+										justifyContent: 'center',
+									}}
+								>
+									<View
+										style={{
+											flex: 3,
+											flexDirection: 'column',
+											justifyContent: 'center',
+										}}
+									>
+										<Text style={styles.title}>
+											{item.name}
+										</Text>
+									</View>
+
+									<View
+										style={{
+											flex: 1,
+											flexDirection: 'column',
+											justifyContent: 'center',
+										}}
+									>
+										<Text style={styles.role}>User</Text>
+									</View>
+								</View>
+							</View>
 						</Item>
 					))}
 				</List>
@@ -114,3 +152,25 @@ export default function ({ navigation }) {
 		</Layout>
 	);
 }
+const styles = StyleSheet.create({
+	drawerContent: {
+		flex: 1,
+	},
+	userInfoSection: {
+		paddingLeft: 20,
+	},
+	userImg: {
+		// flex: 3,
+		width: 70,
+		height: 70,
+		borderRadius: 50,
+	},
+
+	title: {
+		marginLeft: 10,
+		fontSize: 16,
+		// marginTop: 3,
+		fontWeight: 'bold',
+	},
+	role: { fontSize: 14 },
+});
