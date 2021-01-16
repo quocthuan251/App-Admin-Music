@@ -66,15 +66,26 @@ const Auth = () => {
 // };
 
 export default () => {
-	// const ref = React.useRef(null);
 	const auth = useContext(AuthContext);
-	const user = auth.user;
-	// const user = false;
+	// const user = auth.user;
+	const isloadin = auth.isLoading;
+	const userToken = auth.userToken;
+	const user = false;
+
 	return (
+		// <NavigationContainer>
+		// 	{user == null && <Loading />}
+		// 	{user == false && <Auth />}
+		// 	{user == true && <MainScreen />}
+		// </NavigationContainer>
 		<NavigationContainer>
-			{user == null && <Loading />}
-			{user == false && <Auth />}
-			{user == true && <MainScreen />}
+			{isloadin ? (
+				<Loading />
+			) : userToken == null ? (
+				<Auth />
+			) : (
+				<MainScreen />
+			)}
 		</NavigationContainer>
 	);
 };

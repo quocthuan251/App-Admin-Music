@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
@@ -11,17 +11,23 @@ import {
 	Image,
 	StyleSheet,
 } from 'react-native';
-import * as firebase from 'firebase';
 
 import Layout from '../../components/global/Layout';
-import Text from '../../components/utils/UbuntuFont';
+// import Text from '../../components/utils/UbuntuFont';
+import { Text } from 'react-native';
 import Colors from '../../constants/colors';
 import { callAPILogin } from './service';
+
+import { AuthContext } from '../../provider/AuthProvider';
+
 export default function ({ navigation }) {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [loading, setLoading] = useState(false);
 	const [reload, setReload] = useState(null);
+
+	const auth = useContext(AuthContext);
+	const { signIn } = auth.authContext;
 
 	// const { signIn } = React.useContext(AuthContext);
 	// const navigationRef = React.useRef(null);
@@ -48,38 +54,24 @@ export default function ({ navigation }) {
 	// 	};
 	// 	checkTokenStorage();
 	// }
-	function login2() {
-		signIn({ email, password });
-	}
-	async function login() {
-		setLoading(true);
-		// await firebase
-		// 	.auth()
-		// 	.signInWithEmailAndPassword(email, password)
-		// 	.catch(function (error) {
-		// 		// Handle Errors here.
-		// 		var errorCode = error.code;
-		// 		var errorMessage = error.message;
-		// 		// ...
-		// 		setLoading(false);
-		// 		alert(errorMessage);
-		// 	});
 
-		const callData = async () => {
-			const res = await callAPILogin();
-			// console.log(res.data.data);
-			try {
-				AsyncStorage.setItem('@tokenLogin', res.data.data);
-			} catch (err) {
-				console.log(err);
-			}
-		};
-		callData();
-		// setLoading(false);
-		setTimeout(() => {
-			setLoading(false);
-		}, 4000);
-	}
+	// async function login() {
+	// 	setLoading(true);
+	// 	const callData = async () => {
+	// 		const res = await callAPILogin();
+	// 		// console.log(res.data.data);
+	// 		try {
+	// 			AsyncStorage.setItem('@tokenLogin', res.data.data);
+	// 		} catch (err) {
+	// 			console.log(err);
+	// 		}
+	// 	};
+	// 	callData();
+	// 	// setLoading(false);
+	// 	setTimeout(() => {
+	// 		setLoading(false);
+	// 	}, 4000);
+	// }
 	return (
 		<KeyboardAvoidingView behavior="height" enabled style={{ flex: 1 }}>
 			<StatusBar style="auto" translucent backgroundColor="#f7f7f7" />
@@ -123,7 +115,7 @@ export default function ({ navigation }) {
 								padding: 30,
 							}}
 						>
-							Login
+							Đăng nhập
 						</Text>
 						<Text style={{ color: Colors.black, fontSize: 16 }}>
 							Email
@@ -131,7 +123,7 @@ export default function ({ navigation }) {
 						<View style={styles.textInputContainer}>
 							<TextInput
 								style={styles.textInput}
-								placeholder="Enter your email"
+								placeholder="Hãy nhập email"
 								placeholderStyle={{
 									fontFamily: 'Ubuntu_400Regular',
 								}}
@@ -150,12 +142,12 @@ export default function ({ navigation }) {
 								fontSize: 16,
 							}}
 						>
-							Password
+							Mật khẩu
 						</Text>
 						<View style={styles.textInputContainer}>
 							<TextInput
 								style={styles.textInput}
-								placeholder="Enter your password"
+								placeholder="Hãy nhập mật khẩu"
 								placeholderStyle={{
 									fontFamily: 'Ubuntu_400Regular',
 								}}
@@ -168,9 +160,10 @@ export default function ({ navigation }) {
 							/>
 						</View>
 						<TouchableOpacity
-							onPress={() => {
-								login();
-							}}
+							// onPress={() => {
+							// 	login();
+							// }}
+							onPress={() => signIn({ email, password })}
 							disabled={loading}
 							style={{
 								flexDirection: 'row',
@@ -185,7 +178,7 @@ export default function ({ navigation }) {
 										bold
 										style={{ fontSize: 16, color: 'white' }}
 									>
-										Continue
+										Đăng nhập
 									</Text>
 								)}
 							</View>
@@ -204,7 +197,7 @@ export default function ({ navigation }) {
 									color: Colors.black,
 								}}
 							>
-								Don't have an account?
+								Bạn chưa có tài khoản?
 							</Text>
 							<TouchableOpacity
 								onPress={() => {
@@ -215,10 +208,11 @@ export default function ({ navigation }) {
 									bold
 									style={{
 										marginLeft: 5,
-										color: Colors.black,
+										color: '#288050',
+										fontWeight: 'bold',
 									}}
 								>
-									Register here
+									Đăng ký!
 								</Text>
 							</TouchableOpacity>
 						</View>
@@ -238,10 +232,11 @@ export default function ({ navigation }) {
 								<Text
 									bold
 									style={{
-										color: Colors.black,
+										color: '#288050',
+										fontWeight: 'bold',
 									}}
 								>
-									Forget password
+									Quên mật khẩu
 								</Text>
 							</TouchableOpacity>
 						</View>

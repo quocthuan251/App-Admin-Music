@@ -9,11 +9,12 @@ import {
 	TextInput,
 	Image,
 	StyleSheet,
+	Text,
 } from 'react-native';
 import * as firebase from 'firebase';
 
 import Layout from '../../components/global/Layout';
-import Text from '../../components/utils/UbuntuFont';
+// import Text from '../../components/utils/UbuntuFont';
 import Colors from '../../constants/colors';
 
 export default function ({ navigation }) {
@@ -78,13 +79,15 @@ export default function ({ navigation }) {
 								padding: 30,
 							}}
 						>
-							Register
+							Đăng ký
 						</Text>
-						<Text style={{ color: Colors.black, fontSize: 16 }}>Email</Text>
+						<Text style={{ color: Colors.black, fontSize: 16 }}>
+							Email
+						</Text>
 						<View style={styles.textInputContainer}>
 							<TextInput
 								style={styles.textInput}
-								placeholder="Enter your email"
+								placeholder="Hãy nhập email"
 								placeholderStyle={{
 									fontFamily: 'Ubuntu_400Regular',
 								}}
@@ -96,13 +99,19 @@ export default function ({ navigation }) {
 								onChangeText={(text) => setEmail(text)}
 							/>
 						</View>
-						<Text style={{ marginTop: 15, color: Colors.black, fontSize: 16 }}>
-							Password
+						<Text
+							style={{
+								marginTop: 15,
+								color: Colors.black,
+								fontSize: 16,
+							}}
+						>
+							Mật khẩu
 						</Text>
 						<View style={styles.textInputContainer}>
 							<TextInput
 								style={styles.textInput}
-								placeholder="Enter your password"
+								placeholder="Nhập mật khẩu"
 								placeholderStyle={{
 									fontFamily: 'Ubuntu_400Regular',
 								}}
@@ -129,8 +138,11 @@ export default function ({ navigation }) {
 								{loading ? (
 									<ActivityIndicator color="#fff" />
 								) : (
-									<Text bold style={{ fontSize: 16, color: 'white' }}>
-										Create an account
+									<Text
+										bold
+										style={{ fontSize: 16, color: 'white' }}
+									>
+										Tạo tài khoản
 									</Text>
 								)}
 							</View>
@@ -149,7 +161,7 @@ export default function ({ navigation }) {
 									color: Colors.black,
 								}}
 							>
-								Already have an account?
+								Sẳn sàng để đăng nhập?
 							</Text>
 							<TouchableOpacity
 								onPress={() => {
@@ -160,10 +172,11 @@ export default function ({ navigation }) {
 									bold
 									style={{
 										marginLeft: 5,
-										color: Colors.black,
+										color: '#288050',
+										fontWeight: 'bold',
 									}}
 								>
-									Login here
+									Đăng nhập
 								</Text>
 							</TouchableOpacity>
 						</View>

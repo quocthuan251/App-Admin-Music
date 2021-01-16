@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
@@ -7,6 +7,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { SimpleLineIcons } from '@expo/vector-icons';
+import { AuthContext } from '../../provider/AuthProvider';
 // import {
 //     useTheme,
 //     Avatar,
@@ -28,7 +29,8 @@ export function DrawerContent(props) {
 	// const paperTheme = useTheme();
 
 	// const { signOut, toggleTheme } = React.useContext(AuthContext);
-
+	const auth = useContext(AuthContext);
+	const { signOut } = auth.authContext;
 	return (
 		<View style={{ flex: 1 }}>
 			<DrawerContentScrollView {...props}>
@@ -130,7 +132,7 @@ export function DrawerContent(props) {
 							/>
 						)}
 						label="Sign Out"
-						onPress={() => {}}
+						onPress={() => signOut()}
 					/>
 				</View>
 			</DrawerContentScrollView>
