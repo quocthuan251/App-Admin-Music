@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
 	ScrollView,
 	TouchableOpacity,
@@ -15,30 +16,74 @@ import * as firebase from 'firebase';
 import Layout from '../../components/global/Layout';
 import Text from '../../components/utils/UbuntuFont';
 import Colors from '../../constants/colors';
-
+import { callAPILogin } from './service';
 export default function ({ navigation }) {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [loading, setLoading] = useState(false);
+	const [reload, setReload] = useState(null);
 
+	const { signIn } = React.useContext(AuthContext);
+	// const navigationRef = React.useRef(null);
+
+	// useEffect(() => {
+	// 	checkLogin();
+	// }, [reload]);
+
+	// function checkLogin() {
+	// 	// console.log(AsyncStorage.getItem('@tokenLogin'));
+	// 	const checkTokenStorage = async () => {
+	// 		const value = await AsyncStorage.getItem('@tokenLogin');
+	// 		// console.log(res.data.data);
+	// 		if (value != null) {
+	// 			console.log('dang nhap thanh cong');
+	// 			setReload(true);
+	// 		} else {
+	// 			console.log('khoong thanhf coong');
+	// 			// setTimeout(() => {
+	// 			// 	setReload(false);
+	// 			// }, 3000);
+	// 		}
+	// 		// setUser(true);
+	// 	};
+	// 	checkTokenStorage();
+	// }
+	function login2() {
+		signIn({ email, password });
+	}
 	async function login() {
 		setLoading(true);
-		await firebase
-			.auth()
-			.signInWithEmailAndPassword(email, password)
-			.catch(function (error) {
-				// Handle Errors here.
-				var errorCode = error.code;
-				var errorMessage = error.message;
-				// ...
-				setLoading(false);
-				alert(errorMessage);
-			});
+		// await firebase
+		// 	.auth()
+		// 	.signInWithEmailAndPassword(email, password)
+		// 	.catch(function (error) {
+		// 		// Handle Errors here.
+		// 		var errorCode = error.code;
+		// 		var errorMessage = error.message;
+		// 		// ...
+		// 		setLoading(false);
+		// 		alert(errorMessage);
+		// 	});
+
+		const callData = async () => {
+			const res = await callAPILogin();
+			// console.log(res.data.data);
+			try {
+				AsyncStorage.setItem('@tokenLogin', res.data.data);
+			} catch (err) {
+				console.log(err);
+			}
+		};
+		callData();
+		// setLoading(false);
+		setTimeout(() => {
+			setLoading(false);
+		}, 4000);
 	}
 	return (
 		<KeyboardAvoidingView behavior="height" enabled style={{ flex: 1 }}>
 			<StatusBar style="auto" translucent backgroundColor="#f7f7f7" />
-			<Layout navigation={navigation}>
+			<Layout navigation={navigation} withBack>
 				<ScrollView
 					contentContainerStyle={{
 						flexGrow: 1,
@@ -80,7 +125,9 @@ export default function ({ navigation }) {
 						>
 							Login
 						</Text>
-						<Text style={{ color: Colors.black, fontSize: 16 }}>Email</Text>
+						<Text style={{ color: Colors.black, fontSize: 16 }}>
+							Email
+						</Text>
 						<View style={styles.textInputContainer}>
 							<TextInput
 								style={styles.textInput}
@@ -96,7 +143,13 @@ export default function ({ navigation }) {
 								onChangeText={(text) => setEmail(text)}
 							/>
 						</View>
-						<Text style={{ marginTop: 15, color: Colors.black, fontSize: 16 }}>
+						<Text
+							style={{
+								marginTop: 15,
+								color: Colors.black,
+								fontSize: 16,
+							}}
+						>
 							Password
 						</Text>
 						<View style={styles.textInputContainer}>
@@ -116,7 +169,7 @@ export default function ({ navigation }) {
 						</View>
 						<TouchableOpacity
 							onPress={() => {
-								login();
+								login2();
 							}}
 							disabled={loading}
 							style={{
@@ -128,7 +181,10 @@ export default function ({ navigation }) {
 								{loading ? (
 									<ActivityIndicator color="#fff" />
 								) : (
-									<Text bold style={{ fontSize: 16, color: 'white' }}>
+									<Text
+										bold
+										style={{ fontSize: 16, color: 'white' }}
+									>
 										Continue
 									</Text>
 								)}

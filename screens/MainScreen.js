@@ -7,6 +7,7 @@ import NotificationsScreen from './home/Notifications2';
 import SongManageScreen from './songManagement/SongManagement';
 import UserManageScreen from './userManagement/UserManagement';
 import UserInfoManageScreen from './userManagement/UserDetail';
+import UserEditInfoManageScreen from './userManagement/UserEditInfo';
 import ArtistManageScreen from './artistManagement/ArtistManagement';
 import AlbumManageScreen from './albumManagement/AlbumManagement';
 import { DrawerContent } from '../components/navigation/DrawerContent';
@@ -29,6 +30,10 @@ export default function () {
 			<Drawer.Screen
 				name="UserInfoManagement"
 				component={UserInfoManageScreen}
+			/>
+			<Drawer.Screen
+				name="UserEditInfoManagement"
+				component={UserEditInfoManageScreen}
 			/>
 			<Drawer.Screen
 				name="ArtistManagement"

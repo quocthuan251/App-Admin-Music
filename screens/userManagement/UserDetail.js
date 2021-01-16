@@ -40,7 +40,7 @@ export default function ({ navigation }) {
 		// console.log(item);
 	};
 	return (
-		<Layout navigation={navigation} title="Quản lý user" withBack>
+		<Layout navigation={navigation} title="Thông tin người dùng" withBack>
 			{/* <SearchBar
 				placeholder="Search"
 				showCancelButton
@@ -72,7 +72,7 @@ export default function ({ navigation }) {
 			>
 				<View
 					style={{
-						flex: 4,
+						flex: 5,
 
 						flexDirection: 'column',
 						justifyContent: 'center',
@@ -85,16 +85,114 @@ export default function ({ navigation }) {
 							uri: dataUserInfo.avatar,
 						}}
 					/>
+					<Text style={styles.role}>
+						{dataUserInfo.role == 1 ? (
+							<Text>Admin</Text>
+						) : (
+							<Text>User</Text>
+						)}
+					</Text>
+					<Text style={styles.title}>{dataUserInfo.fullname}</Text>
 				</View>
 				<View
 					style={{
-						flex: 6,
+						flex: 4,
+						flexDirection: 'column',
+						// justifyContent: 'center',
+						// alignItems: 'center',
+					}}
+				>
+					<View
+						style={{
+							flexDirection: 'column',
+							alignItems: 'center',
+						}}
+					>
+						<View
+							style={{
+								borderColor: 'black',
+								borderWidth: 1,
+								width: 200,
+								margin: 10,
+							}}
+						/>
+					</View>
+
+					<View
+						style={{
+							flexDirection: 'column',
+							// alignItems: 'center',
+						}}
+					>
+						<View
+							style={{
+								flex: 1,
+								flexDirection: 'row',
+								alignItems: 'center',
+							}}
+						>
+							<View
+								style={{
+									flex: 1,
+								}}
+							/>
+							<Text
+								style={{
+									flex: 1,
+									fontWeight: 'bold',
+								}}
+							>
+								Email:
+							</Text>
+							<Text style={{ flex: 3.5, margin: 10 }}>
+								{dataUserInfo.email}
+							</Text>
+						</View>
+						<View
+							style={{
+								flex: 1,
+								flexDirection: 'row',
+								alignItems: 'center',
+							}}
+						>
+							<View
+								style={{
+									flex: 1,
+								}}
+							/>
+							<Text
+								style={{
+									flex: 1,
+									fontWeight: 'bold',
+								}}
+							>
+								Giới tính:
+							</Text>
+							<Text style={{ flex: 3.5, margin: 10 }}>
+								{dataUserInfo.gender ? (
+									<Text>Nam</Text>
+								) : (
+									<Text>Nữ</Text>
+								)}
+							</Text>
+						</View>
+					</View>
+				</View>
+				<View
+					style={{
+						flex: 1.5,
 						flexDirection: 'column',
 						// justifyContent: 'center',
 						alignItems: 'center',
 					}}
 				>
-					<Text style={styles.title}>{dataUserInfo.fullname}</Text>
+					<Button
+						onPress={() => {
+							navigation.navigate('UserEditInfoManagement');
+						}}
+					>
+						sửa thông tin
+					</Button>
 				</View>
 			</View>
 			{/* </ScrollView> */}
@@ -106,13 +204,13 @@ const styles = StyleSheet.create({
 		width: 170,
 		height: 170,
 		borderRadius: 85,
-		// marginTop: 30,
+		marginTop: 30,
 	},
 
 	title: {
-		marginLeft: 10,
-		fontSize: 26,
+		marginTop: 5,
+		fontSize: 25,
 		fontWeight: 'bold',
 	},
-	role: { fontSize: 14 },
+	role: { marginTop: 10, fontSize: 14 },
 });

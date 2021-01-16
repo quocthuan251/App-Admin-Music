@@ -18,6 +18,7 @@ import {
 } from '@expo-google-fonts/ubuntu';
 import AppNavigator from './navigation/AppNavigator';
 import { AuthProvider } from './provider/AuthProvider';
+import Auth2 from './provider/Auth2';
 
 export default function App(props) {
 	const [isLoadingComplete, setLoadingComplete] = useState(false);
@@ -34,9 +35,10 @@ export default function App(props) {
 		return (
 			// <SafeAreaView style={styles.container}>
 			// <StatusBar style="auto" translucent />
-			<AuthProvider>
-				<AppNavigator />
-			</AuthProvider>
+			// <AuthProvider>
+			// 	<AppNavigator />
+			// </AuthProvider>
+			<Auth2></Auth2>
 			// </SafeAreaView>
 		);
 	}
