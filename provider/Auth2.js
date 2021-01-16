@@ -3,7 +3,7 @@ import { Button, Text, TextInput, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import MainScreen from '../screens/MainScreen';
 const AuthContext = React.createContext();
 
 function SplashScreen() {

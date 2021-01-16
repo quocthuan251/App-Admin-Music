@@ -35,10 +35,10 @@ export default function App(props) {
 		return (
 			// <SafeAreaView style={styles.container}>
 			// <StatusBar style="auto" translucent />
-			// <AuthProvider>
-			// 	<AppNavigator />
-			// </AuthProvider>
-			<Auth2></Auth2>
+			<AuthProvider>
+				<AppNavigator />
+			</AuthProvider>
+			// <Auth2></Auth2>
 			// </SafeAreaView>
 		);
 	}

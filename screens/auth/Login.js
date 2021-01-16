@@ -23,7 +23,7 @@ export default function ({ navigation }) {
 	const [loading, setLoading] = useState(false);
 	const [reload, setReload] = useState(null);
 
-	const { signIn } = React.useContext(AuthContext);
+	// const { signIn } = React.useContext(AuthContext);
 	// const navigationRef = React.useRef(null);
 
 	// useEffect(() => {
@@ -169,7 +169,7 @@ export default function ({ navigation }) {
 						</View>
 						<TouchableOpacity
 							onPress={() => {
-								login2();
+								login();
 							}}
 							disabled={loading}
 							style={{
