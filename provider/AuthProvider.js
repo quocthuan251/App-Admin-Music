@@ -11,18 +11,21 @@ const AuthProvider = (props) => {
 		(prevState, action) => {
 			switch (action.type) {
 				case 'RESTORE_TOKEN':
+					console.log('RESTORE_TOKEN');
 					return {
 						...prevState,
 						userToken: action.token,
 						isLoading: false,
 					};
 				case 'SIGN_IN':
+					console.log('SIGN_IN');
 					return {
 						...prevState,
 						isSignout: false,
 						userToken: action.token,
 					};
 				case 'SIGN_OUT':
+					AsyncStorage.removeItem('@tokenLogin');
 					return {
 						...prevState,
 						isSignout: true,
@@ -45,8 +48,10 @@ const AuthProvider = (props) => {
 				userToken = await AsyncStorage.getItem('@tokenLogin');
 			} catch (e) {
 				// Restoring token failed
+				// console.log('log loi ở useeffect kiểm tra token AuthProvider');
 			}
-
+			// console.log('log loi ở useeffect kiểm tra token AuthProvider');
+			console.log(userToken);
 			// After restoring token, we may need to validate it in production apps
 
 			// This will switch to the App screen or Auth screen and this loading
@@ -63,7 +68,7 @@ const AuthProvider = (props) => {
 				// We will also need to handle errors if sign in failed
 				// After getting token, we need to persist the token using `AsyncStorage`
 				// In the example, we'll use a dummy token
-				console.log("log in authen");
+				console.log('log in authen');
 				console.log(data);
 
 				dispatch({ type: 'SIGN_IN', token: 'dummy-auth-token' });
@@ -81,28 +86,28 @@ const AuthProvider = (props) => {
 		[]
 	);
 	///###################3################
-	const [user, setUser] = useState(null);
+	// const [user, setUser] = useState(null);
 
-	useEffect(() => {
-		checkLogin();
-	}, [user]);
-	function checkLogin() {
-		console.log(AsyncStorage.getItem('@tokenLogin'));
+	// useEffect(() => {
+	// 	checkLogin();
+	// }, [user]);
+	// function checkLogin() {
+	// 	console.log(AsyncStorage.getItem('@tokenLogin'));
 
-		const checkTokenStorage = async () => {
-			const value = await AsyncStorage.getItem('@tokenLogin');
-			if (value != null) {
-				console.log('checklogin khac null');
-				setUser(true);
-			} else {
-				console.log('checklogin null');
-				setTimeout(() => {
-					setUser(false);
-				}, 3000);
-			}
-		};
-		checkTokenStorage();
-	}
+	// 	const checkTokenStorage = async () => {
+	// 		const value = await AsyncStorage.getItem('@tokenLogin');
+	// 		if (value != null) {
+	// 			console.log('checklogin khac null');
+	// 			setUser(true);
+	// 		} else {
+	// 			console.log('checklogin null');
+	// 			setTimeout(() => {
+	// 				setUser(false);
+	// 			}, 3000);
+	// 		}
+	// 	};
+	// 	checkTokenStorage();
+	// }
 
 	return (
 		// <AuthContext.Provider

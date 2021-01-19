@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import { Image, ScrollView, View, StyleSheet, Text } from 'react-native';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import {
 	List,
 	SearchBar,
@@ -16,52 +18,34 @@ import { callAPIUserInfo } from './service';
 const Item = List.Item;
 const Brief = Item.Brief;
 
-export default function ({ navigation }) {
+export default function ({ navigation, route }) {
 	const [isHungry, setIsHungry] = useState(true);
 	const [dataUserInfo, setDataUserInfo] = useState([]);
 	const test = () => {
 		console.log(dataUserInfo[1]);
 	};
+
 	useEffect(() => {
+		const { userID } = route.params;
 		const callData = async () => {
-			let res = await callAPIUserInfo();
+			console.log(userID);
+			let res = await callAPIUserInfo(userID);
 			setDataUserInfo(res.data.data);
 			console.log(res.data.data);
 		};
 		callData();
 	}, []);
-	const deleteItemUser = (id) => {
-		const newDataUserInfo = dataUserInfo.filter((item, index) => {
-			return index !== id;
-		});
-		setDataUserInfo(newDataUserInfo);
-		// console.log(id);
-		console.log('hello');
-		// console.log(item);
-	};
+	// const deleteItemUser = (id) => {
+	// 	const newDataUserInfo = dataUserInfo.filter((item, index) => {
+	// 		return index !== id;
+	// 	});
+	// 	setDataUserInfo(newDataUserInfo);
+	// 	// console.log(id);
+	// 	console.log('hello');
+	// 	// console.log(item);
+	// };
 	return (
 		<Layout navigation={navigation} title="Thông tin người dùng" withBack>
-			{/* <SearchBar
-				placeholder="Search"
-				showCancelButton
-				onSubmit={(value) => test()}
-			/> */}
-			{/* <Button
-				onPress={() => {
-					test();
-				}}
-			>
-				hele test
-			</Button> */}
-			{/* <ScrollView
-				style={{
-					// flex: 1,
-					backgroundColor: '#f5f5f9',
-				}}
-				// automaticallyAdjustContentInsets={false}
-				// showsHorizontalScrollIndicator={false}
-				// showsVerticalScrollIndicator={false}
-			> */}
 			<View
 				style={{
 					flex: 1,
@@ -87,9 +71,9 @@ export default function ({ navigation }) {
 					/>
 					<Text style={styles.role}>
 						{dataUserInfo.role == 1 ? (
-							<Text>Admin</Text>
-						) : (
 							<Text>User</Text>
+						) : (
+							<Text>Admin</Text>
 						)}
 					</Text>
 					<Text style={styles.title}>{dataUserInfo.fullname}</Text>
@@ -104,6 +88,7 @@ export default function ({ navigation }) {
 				>
 					<View
 						style={{
+							flex: 0.5,
 							flexDirection: 'column',
 							alignItems: 'center',
 						}}
@@ -122,6 +107,7 @@ export default function ({ navigation }) {
 						style={{
 							flexDirection: 'column',
 							// alignItems: 'center',
+							flex: 3.5,
 						}}
 					>
 						<View
@@ -188,7 +174,9 @@ export default function ({ navigation }) {
 				>
 					<Button
 						onPress={() => {
-							navigation.navigate('UserEditInfoManagement');
+							navigation.navigate('UserEditInfoManagement', {
+								dataUserInfo: dataUserInfo,
+							});
 						}}
 					>
 						sửa thông tin

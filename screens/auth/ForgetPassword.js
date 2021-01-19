@@ -22,19 +22,20 @@ export default function ({ navigation }) {
 	const [loading, setLoading] = useState(false);
 
 	async function forget() {
-		setLoading(true);
-		await firebase
-			.auth()
-			.sendPasswordResetEmail(email)
-			.then(function () {
-				setLoading(false);
-				navigation.navigate('Login');
-				alert('Your password reset has been sent to your email');
-			})
-			.catch(function (error) {
-				setLoading(false);
-				alert(error);
-			});
+		// setLoading(true);
+		// await firebase
+		// 	.auth()
+		// 	.sendPasswordResetEmail(email)
+		// 	.then(function () {
+		// 		setLoading(false);
+		// 		navigation.navigate('Login');
+		// 		alert('Your password reset has been sent to your email');
+		// 	})
+		// 	.catch(function (error) {
+		// 		setLoading(false);
+		// 		alert(error);
+		// 	});
+		console.log('hello');
 	}
 	return (
 		<KeyboardAvoidingView behavior="height" enabled style={{ flex: 1 }}>

@@ -1,24 +1,21 @@
 import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-export const callAPI = async (
+
+export const callAPILogin = async (
 	endpoint,
 	body,
 	method = 'GET',
 	typeAuthor = 'Token'
 ) => {
-	let token = await AsyncStorage.getItem('@tokenLogin');
 	let apiReturn = await axios({
-		url: `https://mp3-music-ios.herokuapp.com/album`,
+		url: `https://demo7080721.mockable.io/node-login`,
 		method: method,
 		headers: {
-			Authorization: `Bearer ${token}`,
 			'content-type': 'application/json',
 			accept: 'application/json',
 		},
 		data: body,
 	})
 		.then((response) => {
-			// console.log(response);
 			return response;
 		})
 		.catch((error) => ({ error }));

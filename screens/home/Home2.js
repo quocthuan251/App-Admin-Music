@@ -1,11 +1,22 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Image, View, Text, StyleSheet } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import Layout from '../../components/global/Layout';
 import { Button, Flex } from '@ant-design/react-native';
+import { callAPIHome } from './service';
 
 export default function ({ navigation }) {
+	const [dataHome, setDataHome] = useState([]);
+	useEffect(() => {
+		const callData = async () => {
+			let res = await callAPIHome();
+			setDataHome(res.data.data);
+			// console.log('danh sách  home');
+			// console.log(res.data.data);
+		};
+		callData();
+	}, []);
 	return (
 		<Layout navigation={navigation} title="Home">
 			<View style={styles.homeContent}>
@@ -50,7 +61,9 @@ export default function ({ navigation }) {
 											source={require('../../assets/user.png')}
 										/>
 										<Text style={styles.title}>User</Text>
-										<Text style={styles.number}>279</Text>
+										<Text style={styles.number}>
+											{dataHome.user}
+										</Text>
 									</View>
 								</Button>
 								<Button
@@ -105,7 +118,9 @@ export default function ({ navigation }) {
 											source={require('../../assets/albums.png')}
 										/>
 										<Text style={styles.title}>Albums</Text>
-										<Text style={styles.number}>50</Text>
+										<Text style={styles.number}>
+											{dataHome.album}
+										</Text>
 									</View>
 								</Button>
 								<Button
@@ -132,7 +147,9 @@ export default function ({ navigation }) {
 										<Text style={styles.title}>
 											Bài hát
 										</Text>
-										<Text style={styles.number}>123</Text>
+										<Text style={styles.number}>
+											{dataHome.song}
+										</Text>
 									</View>
 								</Button>
 								<Button
@@ -157,7 +174,7 @@ export default function ({ navigation }) {
 											source={require('../../assets/karaoke.png')}
 										/>
 										<Text style={styles.title}>Ca sĩ</Text>
-										<Text style={styles.number}>79</Text>
+										<Text style={styles.number}>47</Text>
 									</View>
 								</Button>
 							</Flex>

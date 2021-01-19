@@ -1,7 +1,16 @@
 // tslint:disable:no-empty
 import React, { useState, useEffect } from 'react';
-import { Image, ScrollView, View, StyleSheet, Text } from 'react-native';
+import {
+	Image,
+	ScrollView,
+	View,
+	StyleSheet,
+	Text,
+	TextInput,
+} from 'react-native';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import {
 	List,
 	SearchBar,
@@ -13,6 +22,7 @@ import {
 	WhiteSpace,
 	WingBlank,
 	Switch,
+	Toast,
 } from '@ant-design/react-native';
 import Layout from '../../components/global/Layout';
 import { callAPIUserInfo } from './service';
@@ -20,31 +30,70 @@ import { callAPIUserInfo } from './service';
 const Item = List.Item;
 const Brief = Item.Brief;
 
-export default function ({ navigation }) {
+export default function ({ navigation, route }) {
 	const [valueName, setValueName] = useState('');
 	const [valueSex, setValueSex] = useState(false);
 	const [valueEmail, setValueEmail] = useState('');
-	const [dataUserInfo, setDataUserInfo] = useState([]);
-	const test = () => {
-		console.log(dataUserInfo[1]);
-	};
-	useEffect(() => {
-		const callData = async () => {
-			let res = await callAPIUserInfo();
-			setDataUserInfo(res.data.data);
-			console.log(res.data.data);
+	const [dataUserInfoEdit, setDataUserInfoEdit] = useState([]);
+	// const clickUpdateInfo = () => {
+	// 	console.log(dataUserInfoEdit);
+	// };
+	///////////////////////
+
+	const clickUpdateInfo = async () => {
+		const body = {
+			fullname: valueName,
+			gender: valueSex,
+			role: 2,
 		};
-		callData();
-	}, []);
-	const deleteItemUser = (id) => {
-		const newDataUserInfo = dataUserInfo.filter((item, index) => {
-			return index !== id;
-		});
-		setDataUserInfo(newDataUserInfo);
-		// console.log(id);
-		console.log('hello');
-		// console.log(item);
+		let token = await AsyncStorage.getItem('@tokenLogin');
+		return axios({
+			url: `https://mp3-music-ios.herokuapp.com/user/${dataUserInfoEdit._id}`,
+			method: 'PATCH',
+			headers: {
+				Authorization: `Bearer ${token}`,
+				'content-type': 'application/json',
+				accept: 'application/json',
+			},
+			data: body,
+		})
+			.then((response) => {
+				console.log('repo');
+				console.log(response);
+
+				Toast.success('cập nhật thành công !!!', 1);
+				navigation.navigate('UserManagement', {
+					isRefe: true,
+				});
+				// return response;
+			})
+			.catch((error) => {
+				Toast.fail('cập nhật không thành công !!!');
+			});
 	};
+	///////////////////
+
+	useEffect(() => {
+		const { dataUserInfo } = route.params;
+		console.log(dataUserInfo);
+		// const callData = async () => {
+		// 	console.log(userID);
+		// 	let res = await callAPIUserInfo(userID);
+		// 	setDataUserInfo(res.data.data);
+		// 	console.log(res.data.data);
+		// };
+		// callData();
+		setDataUserInfoEdit(dataUserInfo);
+	}, []);
+	// const deleteItemUser = (id) => {
+	// 	const newDataUserInfo = dataUserInfo.filter((item, index) => {
+	// 		return index !== id;
+	// 	});
+	// 	setDataUserInfo(newDataUserInfo);
+	// 	// console.log(id);
+	// 	console.log('hello');
+	// 	// console.log(item);
+	// };
 	const changeSex = () => {
 		setValueSex(!valueSex);
 	};
@@ -79,18 +128,18 @@ export default function ({ navigation }) {
 						<Image
 							style={styles.userInfoImg}
 							source={{
-								uri: dataUserInfo.avatar,
+								uri: dataUserInfoEdit.avatar,
 							}}
 						/>
 						<View style={styles.role}>
-							{dataUserInfo.role == 1 ? (
-								<Text>Admin</Text>
-							) : (
+							{dataUserInfoEdit.role == 1 ? (
 								<Text>User</Text>
+							) : (
+								<Text>Admin</Text>
 							)}
 						</View>
 						<Text style={styles.title}>
-							{dataUserInfo.fullname}
+							{dataUserInfoEdit.fullname}
 						</Text>
 					</View>
 					<View
@@ -104,13 +153,30 @@ export default function ({ navigation }) {
 						<WingBlank>
 							<View>
 								<Text>Tên:</Text>
+								{/* <TextInput
+								
+								placeholder="Hãy nhập tên"
+								placeholderStyle={{
+									fontFamily: 'Ubuntu_400Regular',
+								}}
+								value={dataUserInfoEdit.fullname}
+								autoCapitalize="none"
+								autoCompleteType="email"
+								autoCorrect={false}
+								keyboardType="email-address"
+								onChangeText={(text) => setValueName(text)}
+							/> */}
 								<InputItem
 									clear
-									value={dataUserInfo.fullname}
+									defaultValue={dataUserInfoEdit.fullname}
 									onChange={(value) => {
 										setValueName(value);
 									}}
 									placeholder="Hãy nhập tên"
+									autoFocus={
+										/* TODO: https://github.com/facebook/jest/issues/3707  */ typeof jest ===
+										'undefined'
+									}
 								/>
 							</View>
 						</WingBlank>
@@ -120,8 +186,10 @@ export default function ({ navigation }) {
 								<Text>Email:</Text>
 								<InputItem
 									clear
-									value={dataUserInfo.email}
-									onChange={(value) => {}}
+									defaultValue={dataUserInfoEdit.email}
+									onChange={(value) => {
+										setValueEmail(value);
+									}}
 									placeholder="Hãy nhập email"
 								/>
 							</View>
@@ -132,7 +200,9 @@ export default function ({ navigation }) {
 								<Text>Giới tính:</Text>
 								<InputItem
 									clear
-									value="Nam"
+									defaultValue={
+										dataUserInfoEdit.gender ? 'Nam' : 'Nữ'
+									}
 									onChange={(value) => {}}
 									placeholder="Hãy nhập email"
 								/>
@@ -149,7 +219,7 @@ export default function ({ navigation }) {
 					>
 						<Button
 							onPress={() => {
-								test();
+								clickUpdateInfo();
 							}}
 						>
 							Cập nhật

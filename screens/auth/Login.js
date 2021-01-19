@@ -10,14 +10,15 @@ import {
 	TextInput,
 	Image,
 	StyleSheet,
+	Alert,
 } from 'react-native';
-
+import { Button, InputItem, List, Toast } from '@ant-design/react-native';
 import Layout from '../../components/global/Layout';
 // import Text from '../../components/utils/UbuntuFont';
 import { Text } from 'react-native';
 import Colors from '../../constants/colors';
 import { callAPILogin } from './service';
-
+import axios from 'axios';
 import { AuthContext } from '../../provider/AuthProvider';
 
 export default function ({ navigation }) {
@@ -25,6 +26,10 @@ export default function ({ navigation }) {
 	const [password, setPassword] = useState('');
 	const [loading, setLoading] = useState(false);
 	const [reload, setReload] = useState(null);
+	const [invalidPass, setinvalidPass] = useState(null);
+	const [invalidEmail, setinvalidEmail] = useState(null);
+	const [invalidLogin, setinvalidLogin] = useState(null);
+	const [invalidEmailTitle, setinvalidEmailTitle] = useState(null);
 
 	const auth = useContext(AuthContext);
 	const { signIn } = auth.authContext;
@@ -72,6 +77,68 @@ export default function ({ navigation }) {
 	// 		setLoading(false);
 	// 	}, 4000);
 	// }
+
+	const loginHandle = async (email, password) => {
+		setLoading(true);
+		// setTimeout(() => {
+		// 	setLoading(false);
+		// }, 2000);
+		// const foundUser = Users.filter((item) => {
+		// 	return userName == item.username && password == item.password;
+		// });
+		console.log(email);
+		console.log(password);
+		if (password === '') {
+			console.log('pass');
+			setinvalidPass(false);
+			setLoading(false);
+		} else {
+			setinvalidPass(null);
+		}
+		if (email === '') {
+			console.log('email');
+			setinvalidEmail(false);
+			setLoading(false);
+		} else {
+			setinvalidEmail(null);
+		}
+		if (password !== '' && email !== '') {
+			console.log('ok');
+			const body = {
+				email: email,
+				password: password,
+			};
+			return await axios({
+				url: `https://mp3-music-ios.herokuapp.com/auth/login`,
+				method: 'POST',
+				headers: {
+					'content-type': 'application/json',
+					accept: 'application/json',
+				},
+				data: body,
+			})
+				.then((response) => {
+					setinvalidLogin(true);
+					setLoading(false);
+					console.log('dăng nhạp thnahf cpng');
+					console.log(response.data.data.token);
+					AsyncStorage.setItem(
+						'@tokenLogin',
+						response.data.data.token
+					);
+					 signIn({ email, password });
+				})
+				.catch((error) => {
+					console.log('dăng nhạp api thát bại');
+					console.log(error);
+					setinvalidLogin(false);
+					setLoading(false);
+					return Toast.fail('Email hoặc mật khẩu chưa đúng !!!');
+				});
+
+			// signIn({ email, password });
+		}
+	};
 	return (
 		<KeyboardAvoidingView behavior="height" enabled style={{ flex: 1 }}>
 			<StatusBar style="auto" translucent backgroundColor="#f7f7f7" />
@@ -112,15 +179,23 @@ export default function ({ navigation }) {
 								fontSize: 24,
 								color: Colors.black,
 								alignSelf: 'center',
-								padding: 30,
+								padding: 23,
 							}}
 						>
 							Đăng nhập
 						</Text>
+
 						<Text style={{ color: Colors.black, fontSize: 16 }}>
 							Email
 						</Text>
-						<View style={styles.textInputContainer}>
+						<View
+							style={[
+								styles.textInputContainer,
+								invalidEmail === false
+									? styles.textInputContainerFalse
+									: styles.textInputContainer,
+							]}
+						>
 							<TextInput
 								style={styles.textInput}
 								placeholder="Hãy nhập email"
@@ -129,7 +204,7 @@ export default function ({ navigation }) {
 								}}
 								value={email}
 								autoCapitalize="none"
-								autoCompleteType="off"
+								autoCompleteType="email"
 								autoCorrect={false}
 								keyboardType="email-address"
 								onChangeText={(text) => setEmail(text)}
@@ -144,7 +219,14 @@ export default function ({ navigation }) {
 						>
 							Mật khẩu
 						</Text>
-						<View style={styles.textInputContainer}>
+						<View
+							style={[
+								styles.textInputContainer,
+								invalidPass === false
+									? styles.textInputContainerFalse
+									: styles.textInputContainer,
+							]}
+						>
 							<TextInput
 								style={styles.textInput}
 								placeholder="Hãy nhập mật khẩu"
@@ -163,7 +245,10 @@ export default function ({ navigation }) {
 							// onPress={() => {
 							// 	login();
 							// }}
-							onPress={() => signIn({ email, password })}
+							// onPress={() => signIn({ email, password })}
+							onPress={() => {
+								loginHandle(email, password);
+							}}
 							disabled={loading}
 							style={{
 								flexDirection: 'row',
@@ -255,6 +340,14 @@ const styles = StyleSheet.create({
 		marginTop: 15,
 		backgroundColor: '#FFF',
 		borderColor: '#d8d8d8',
+		borderWidth: 1,
+		borderRadius: 8,
+		flexDirection: 'row',
+	},
+	textInputContainerFalse: {
+		marginTop: 15,
+		backgroundColor: '#FFF',
+		borderColor: 'red',
 		borderWidth: 1,
 		borderRadius: 8,
 		flexDirection: 'row',

@@ -46,13 +46,7 @@ export default function ({ navigation }) {
 				showCancelButton
 				onSubmit={(value) => test()}
 			/>
-			<Button
-				onPress={() => {
-					test();
-				}}
-			>
-				hele test
-			</Button>
+
 			<ScrollView
 				style={{ flex: 1, backgroundColor: '#f5f5f9' }}
 				automaticallyAdjustContentInsets={false}

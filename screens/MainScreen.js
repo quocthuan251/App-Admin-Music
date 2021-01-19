@@ -5,6 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import HomeScreen from './home/Home2';
 import NotificationsScreen from './home/Notifications2';
 import SongManageScreen from './songManagement/SongManagement';
+import SongCreateScreen from './songManagement/CreateSong';
 import UserManageScreen from './userManagement/UserManagement';
 import UserInfoManageScreen from './userManagement/UserDetail';
 import UserEditInfoManageScreen from './userManagement/UserEditInfo';
@@ -26,6 +27,7 @@ export default function () {
 				component={NotificationsScreen}
 			/>
 			<Drawer.Screen name="SongManagement" component={SongManageScreen} />
+			<Drawer.Screen name="SongCreate" component={SongCreateScreen} />
 			<Drawer.Screen name="UserManagement" component={UserManageScreen} />
 			<Drawer.Screen
 				name="UserInfoManagement"

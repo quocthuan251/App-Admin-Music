@@ -26,7 +26,8 @@ export default function ({ navigation }) {
 		const callData = async () => {
 			let res = await callAPI();
 			setListArtist(res.data.data);
-			console.log(res.data.data);
+			console.log('album');
+			console.log(res.data);
 		};
 		callData();
 	}, []);
@@ -46,13 +47,7 @@ export default function ({ navigation }) {
 				showCancelButton
 				onSubmit={(value) => test()}
 			/>
-			<Button
-				onPress={() => {
-					test();
-				}}
-			>
-				hele test
-			</Button>
+
 			<ScrollView
 				style={{ flex: 1, backgroundColor: '#f5f5f9' }}
 				automaticallyAdjustContentInsets={false}
@@ -85,7 +80,7 @@ export default function ({ navigation }) {
 									<Image
 										style={{ width: 60, height: 60 }}
 										source={{
-											uri: item.thumbnail,
+											uri: item.image,
 										}}
 									/>
 									<View>

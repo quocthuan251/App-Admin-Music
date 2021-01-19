@@ -40,6 +40,7 @@ export default function App({ navigation }) {
       try {
         userToken = await AsyncStorage.getItem('userToken');
       } catch (e) {
+        
         // Restoring token failed
       }
 
